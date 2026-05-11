@@ -144,6 +144,8 @@ jobs:
         - INSTALL_PYTHON: true
         steps:
         - checkout
+            clone:
+               ssh:false
         - run: chmod a+x ci/*.sh
         - run: bash ci/circleci-build-android-arm64.sh
         - deploy-code:
@@ -158,6 +160,8 @@ jobs:
         - INSTALL_PYTHON: true
         steps:
         - checkout
+            clone:
+               ssh:false
         - run: chmod a+x ci/*.sh
         - run: bash ci/circleci-build-android-armhf.sh
         - deploy-code:
@@ -173,6 +177,8 @@ jobs:
             INSTALL_PYTHON: false
         steps:
         - checkout
+            clone:
+               ssh:false
         - run: sudo chmod go+w /usr/local
         - restore_cache:
             key: "{{checksum \"build-deps/macos-cache-stamp\"}}\
@@ -206,6 +212,8 @@ jobs:
         - DEPLOY_USE_ORB: false
         steps:
         - checkout
+            clone:
+               ssh:false
         - run:
             privileged: False
             shell: cmd.exe
@@ -225,6 +233,8 @@ jobs:
         - DEPLOY_USE_ORB: true
         steps:
         - checkout
+            clone:
+               ssh:false
         - run: chmod a+x ci/*.sh
         - run:
             command: bash ci/circleci-build-flatpak.sh
@@ -241,6 +251,8 @@ jobs:
         - DEPLOY_USE_ORB: true
         steps:
         - checkout
+            clone:
+               ssh:false
         - run: chmod a+x ci/*.sh
         - run:
             command: bash ci/circleci-build-flatpak.sh
@@ -259,6 +271,8 @@ jobs:
         - DEPLOY_USE_ORB: true
         steps:
         - checkout
+            clone:
+               ssh:false
         - run: chmod a+x ci/*.sh
         - run:
             command: bash ci/circleci-build-flatpak.sh
@@ -275,6 +289,8 @@ jobs:
         - DEPLOY_USE_ORB: true
         steps:
         - checkout
+             clone:
+                ssh:false
         - run: chmod a+x ci/*.sh
         - run:
             command: bash ci/circleci-build-flatpak.sh
@@ -294,6 +310,8 @@ jobs:
         - DEPLOY_USE_ORB: true
         steps:
         - checkout
+            clone:
+               ssh:false
         - run: chmod a+x ./ci/*.sh
         - run:
             command: ci/circleci-build-ubuntu-docker.sh
@@ -313,6 +331,8 @@ jobs:
         - DEPLOY_USE_ORB: true
         steps:
         - checkout
+             clone:
+                ssh:false
         - run: chmod a+x ./ci/*.sh
         - run:
             command: ci/circleci-build-ubuntu-docker.sh
@@ -330,6 +350,8 @@ jobs:
         - DOCKER_IMAGE=debian:trixie
         steps:
         - checkout
+            clone:
+               ssh:false
         - run: chmod a+x ci/*.sh
         - run:
             command: ci/circleci-build-ubuntu-docker.sh
@@ -349,6 +371,8 @@ jobs:
         - DEPLOY_USE_ORB: true
         steps:
         - checkout
+            clone:
+               ssh:false
         - run: chmod a+x ./ci/*.sh
         - run:
             command: ci/circleci-build-ubuntu-docker.sh
@@ -368,6 +392,8 @@ jobs:
         - DEPLOY_USE_ORB: true
         steps:
         - checkout
+             clone:
+                ssh:false
         - run: chmod a+x ./ci/*.sh
         - run:
             command: ci/circleci-build-ubuntu-docker.sh
@@ -385,6 +411,8 @@ jobs:
         - DOCKER_IMAGE=debian:bookworm
         steps:
         - checkout
+             clone:
+                ssh:false
         - run: chmod a+x ci/*.sh
         - run:
             command: ci/circleci-build-ubuntu-docker.sh
@@ -403,6 +431,8 @@ jobs:
         - DEPLOY_USE_ORB: true
         steps:
         - checkout
+             clone:
+                ssh:false
         - run: chmod a+x ./ci/*.sh
         - run:
             command: ci/circleci-build-ubuntu-docker.sh
@@ -421,6 +451,8 @@ jobs:
         - DEPLOY_USE_ORB: true
         steps:
         - checkout
+             clone:
+                ssh:false
         - run: chmod a+x ./ci/*.sh
         - run:
             command: ci/circleci-build-ubuntu-docker.sh
@@ -436,6 +468,8 @@ jobs:
         - BUILD_ENV=debian
         steps:
         - checkout
+             clone:
+                ssh:false
         - run: >
             echo "deb-src http://ftp.us.debian.org/debian bullseye main"
             | sudo tee -a /etc/apt/sources.list
@@ -458,6 +492,8 @@ jobs:
         - BUILD_ENV=ubuntu
         steps:
         - checkout
+            clone:
+               ssh:false
         - run:
             name: "Update apt sources"
             command: |
@@ -486,6 +522,8 @@ jobs:
         - DEPLOY_USE_ORB: false
         steps:
         - checkout
+             clone:
+               ssh:false
         - run:
             privileged: False
             shell: cmd.exe
