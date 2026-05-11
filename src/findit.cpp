@@ -27,11 +27,18 @@
 
 #include "wx/jsonval.h"
 #include "wx/jsonwriter.h"
+#include <wx/dcbuffer.h>
 
 
 MainDialog::MainDialog(wxWindow* parent,findit_pi *p) : FindItDialog( parent )
 {
     pPlugin = p;
+	
+	m_gridMaterial->SetDefaultCellBackgroundColour(*wxWHITE);
+	m_gridMaterial->SetDefaultCellTextColour(*wxBLACK);
+	m_gridMaterial->SetLabelBackgroundColour(*wxWHITE);
+	m_gridMaterial->SetLabelTextColour(*wxBLACK);
+	m_gridMaterial->Refresh();
 }
 
 MainDialog::~MainDialog()
@@ -133,6 +140,13 @@ void MainDialog::OnInit( wxInitDialogEvent& event )
     this->m_gridLocations->ClearGrid();
 
     loadData();
+	
+     // Added to fix black screen
+	applyGridColors(m_gridMaterial);
+	applyGridColors(m_gridFood);
+	applyGridColors(m_gridLocations);
+	applyGridColors(m_gridUnits);
+
 
     this->m_notebook1->SetSelection(0);
 #ifndef __WXOSX__
@@ -831,6 +845,9 @@ int MainDialog::addLineFood()
 
     int lastRow = this->m_gridFood->GetNumberRows();
     this->m_gridFood->AppendRows();
+	
+	// Fix Black area
+	applyGridColors(m_gridFood);
 
     this->m_gridFood->SetCellEditor(lastRow,BUY,boolEditor);
     this->m_gridFood->SetCellEditor(lastRow,PRIORITY,comboPriority);
@@ -872,6 +889,9 @@ int MainDialog::addLineMaterial()
 
     int lastRow = this->m_gridMaterial->GetNumberRows();
     this->m_gridMaterial->AppendRows();
+
+	// FIX: apply colors to the new row
+	applyGridColors(m_gridMaterial);
 
     this->m_gridMaterial->SetCellEditor(lastRow,BUY,boolEditor);
     this->m_gridMaterial->SetCellEditor(lastRow,PRIORITY,comboPriority);
@@ -1075,6 +1095,9 @@ void MainDialog::loadData()
     for( ; pnode; pnode=pnode->NextSiblingElement())
     {
         this->m_gridLocations->AppendRows();
+		//Fix Black Area
+		applyGridColors(m_gridLocations);
+		
         lastRow = this->m_gridLocations->GetNumberRows()-1;
 
         for(int i = 0; i < this->m_gridLocations->GetNumberCols(); i++)
@@ -1116,6 +1139,9 @@ void MainDialog::loadData()
     for( ; pnode; pnode=pnode->NextSiblingElement())
     {
         this->m_gridUnits->AppendRows();
+		// Fix Black area
+		applyGridColors(m_gridUnits);
+		
         lastRow = this->m_gridUnits->GetNumberRows()-1;
 
         data = wxString(pnode->Attribute("c0"),wxConvUTF8);
@@ -1655,6 +1681,35 @@ void myGridStringTable::SetColLabelValue( int col, const wxString& value )
 
     m_colLabels[col] = value;
 }
+
+void MainDialog::applyGridColors(wxGrid* grid)
+{
+    // Set defaults
+    grid->SetDefaultCellBackgroundColour(*wxWHITE);
+    grid->SetDefaultCellTextColour(*wxBLACK);
+    grid->SetLabelBackgroundColour(*wxWHITE);
+    grid->SetLabelTextColour(*wxBLACK);
+
+    // Apply to all existing cells
+    int rows = grid->GetNumberRows();
+    int cols = grid->GetNumberCols();
+
+    for (int r = 0; r < rows; ++r) {
+        for (int c = 0; c < cols; ++c) {
+            grid->SetCellBackgroundColour(r, c, *wxWHITE);
+            grid->SetCellTextColour(r, c, *wxBLACK);
+        }
+    }
+
+    grid->Refresh();
+}
+
+
+
+
+
+
+
 
 /*
 wxString myGridTable::GetTypeName(int row,int col)

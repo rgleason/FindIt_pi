@@ -20,7 +20,7 @@ FindItDialog::FindItDialog( wxWindow* parent, wxWindowID id, const wxString& tit
     m_panel1 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
     wxBoxSizer* bSizer2;
     bSizer2 = new wxBoxSizer( wxVERTICAL );
-
+       
     wxBoxSizer* bSizer7;
     bSizer7 = new wxBoxSizer( wxHORIZONTAL );
 

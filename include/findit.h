@@ -33,6 +33,8 @@ public:
 
     MainDialog( wxWindow *parent, findit_pi* p );
     virtual ~MainDialog();
+	
+	void applyGridColors(wxGrid* grid);
 
     void reloadData();
     void setLogbookColumns(bool logbookReady);
@@ -139,6 +141,8 @@ public:
     wxString GetColLabelValue( int col );
 
     wxGridStringArray m_data;
+	
+    void OnPanelPaint(wxPaintEvent& event);
 
 
 private:

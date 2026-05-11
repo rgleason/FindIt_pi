@@ -30,6 +30,8 @@
 #include <wx/checkbox.h>
 #include <wx/radiobox.h>
 #include <wx/statline.h>
+#include <wx/event.h>
+
 
 ///////////////////////////////////////////////////////////////////////////
 

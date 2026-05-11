@@ -82,6 +82,9 @@ public:
     void UpdateAuiStatus(void);
 
     void SetDefaults(void);
+	
+	void OnPanelPaint(wxPaintEvent& event);
+
 
     bool isLogbookReady;
     bool isLogbookWindowShown;
