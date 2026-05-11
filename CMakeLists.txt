@@ -1,5 +1,6 @@
 ##---------------------------------------------------------------------------
 ## Author:      Pavel Kalian  
+##
 ##***************************************************************************
 ## *   Copyright (C) 2010 by Sean d'Epagnier                              *
 ## *   License:     GPLv3+
@@ -18,8 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,                                       *
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 #-----------------------------------------------------------------------------
-# Frontend2 Author: Jon Gough 
-# Frontend2 Author: Jon Gough Testplugin(TP) v1.0.326.0 18/01/2025 DD/MM/YYYY
+# Frontend2 Author: Jon Gough Testplugin(TP) v1.0.359.0 09/12/2025 DD/MM/YYYY
 # buildCI:yes useODAPI:no validateJSON:no
 # ---------------------------------------------------------------------------
 ## -- When changing this file do NOT change the order of the sections.    -- ##
@@ -31,22 +31,34 @@
 set(CMLOC "CMakeLists: ")
 
 # define minimum cmake version
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.15)
 if(COMMAND cmake_policy)
   if (POLICY CMP0043)
     cmake_policy(SET CMP0043 NEW)
   endif (POLICY CMP0043)
   cmake_policy(SET CMP0048 NEW)
+  if (POLICY CMP0068)
+    cmake_policy(SET CMP0068 NEW)
+  endif (POLICY CMP0068)
   if (POLICY CMP0076)
     cmake_policy(SET CMP0076 NEW)
   endif (POLICY CMP0076)
   if (POLICY CMP0077)
     cmake_policy(SET CMP0077 NEW)
   endif (POLICY CMP0077)
+  if (POLICY CMP0079)
+    cmake_policy(SET CMP0079 NEW)
+  endif (POLICY CMP0079)
+  if (POLICY CMP0175)
+    cmake_policy(SET CMP0175 NEW)
+  endif (POLICY CMP0175)
+  if (POLICY CMP0177)
+    cmake_policy(SET CMP0177 NEW)
+  endif (POLICY CMP0177)
 endif (COMMAND cmake_policy)
 
-
-
+# set for vscode/vscodium
+set(CMAKE_BUILD_WITH_INSTALL_RPATH ON)
 
 # define plugin name, owner and versions
 set(VERBOSE_NAME "FindIt")
@@ -61,7 +73,7 @@ set(VERSION_MAJOR "1")
 set(VERSION_MINOR "3")
 set(VERSION_PATCH "55")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE  "21/01/2025")#DD/MM/YYYY format
+set(VERSION_DATE  "10/05/2025")#DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov58")
 
 set(OCPN_API_VERSION_MAJOR "1")
@@ -70,9 +82,8 @@ set(TP_COMMENT "  * Release using CI")
 
 set(PARENT "opencpn")
 
-#Use to set up a local webserver with git installed.
-#Default is github.com. Now set in pluginconfigure.cmake
-#set(GIT_REPOSITORY_SERVER "github.com")
+# Use to set up a local webserver with git installed. Default is github.com.
+# Now set in PluginSetup.cmake set(GIT_REPOSITORY_SERVER "github.com")
 
 ## Specifies Cloudsmith upload repository suffix for each catalog
 set(PROD "prod")   #Standard Repos
@@ -80,8 +91,8 @@ set(BETA "beta")   #Standard Repos
 set(ALPHA "alpha") #Standard Repos
 
 # Set if  Cloudsmith Base Repository name does not match your Git Repository name.
-#set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
-#set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")  #Ricks's customization
+#set (CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
+#set (CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")  #Ricks's customization
 set(CLOUDSMITH_BASE_REPOSITORY "findit")  # without the pi
 
 # Set the following to use OpenCPN cloudsmith repositories instead of own repositories
@@ -101,7 +112,11 @@ option(PLUGIN_USE_SVG "Use SVG graphics" ON)
 
 set(CMAKE_CXX_STANDARD 11)
 
+
+
+# Prefer libGL.so to libOpenGL.so, see CMP0072
 set(OpenGL_GL_PREFERENCE "LEGACY")
+
 option(USE_GL "Enable OpenGL support" OFF)
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
@@ -150,6 +165,7 @@ add_definitions(-DUSE_S57)
 
 ## ---- Section Below - Add your project SET(SRCS and SET(HDRS  etc..
 
+
 SET(SRCS
 	src/findit_pi.cpp
 	src/findit.cpp
@@ -173,6 +189,8 @@ add_definitions(-DPLUGIN_USE_SVG)
 
 ## ----- If using JSON validation in plugin section above is needed --------##
 
+if (QT_ANDROID)
+endif (QT_ANDROID)
 
 ##=============================================================
 ## Change as required to collect all the set( headers and SRCS
@@ -187,8 +205,8 @@ set(SRC ${SRCS} ${HDRS} )
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 
-## Change target_sources to match your project needs.
-##==============================================================
+# Change target_sources to match your project needs.
+# ==============================================================
 
 target_sources(${PACKAGE_NAME} PUBLIC ${SRC} )
 
@@ -205,7 +223,7 @@ if (NOT OCPN_FLATPAK_CONFIG)
     target_link_libraries(${PACKAGE_NAME} windows::headers)
   endif (WIN32)
 
-  add_subdirectory(opencpn-libs/api-18)
+  add_subdirectory(opencpn-libs/api-${OCPN_API_VERSION_MINOR})
   target_link_libraries(${PACKAGE_NAME} ocpn::api)
 
   add_subdirectory(opencpn-libs/tinyxml)
